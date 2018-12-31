@@ -318,19 +318,10 @@ def count_common_connections(network, user_A, user_B):
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
 def find_path_to_friend(network, user_A, user_B):
-    if user_A not in network or user_B not in network:
-        return None
-    path=[]
-    path.append(user_A)
-    if user_B in get_connections(network,user_A):
-        print user_A
-        path.append(user_B)
-    else:
-        for dude in get_connections(network,user_B):
-            find_path_to_friend(network, user_B, dude) 
-    return path
+	# your RECURSIVE solution here!
+	return None
 
-print find_path_to_friend(network,'Walter','Freda')
+print find_path_to_friend(network,'John','Freda')
 
 # Make-Your-Own-Procedure (MYOP)
 # ----------------------------------------------------------------------------- 
