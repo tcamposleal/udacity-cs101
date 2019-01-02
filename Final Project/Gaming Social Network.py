@@ -317,11 +317,33 @@ def count_common_connections(network, user_A, user_B):
 #   in this procedure to keep track of nodes already visited in your search. You 
 #   may safely add default parameters since all calls used in the grading script 
 #   will only include the arguments network, user_A, and user_B.
-def find_path_to_friend(network, user_A, user_B):
-	# your RECURSIVE solution here!
-	return None
+def find_path_to_friend(network, user_A, user_B,to_visit=[],visited=[],path=[]):
+    if len(visited)==len(network):
+        return None
+    if  user_A==user_B:
+        path.append(user_A)
+        return path
+    if user_A not in visited:
+        if to_visit:
+            visited.append(to_visit.pop(0))
+        else:
+            visited.append(user_A)
+        for dude in get_connections(network,user_A):
+            if dude not in to_visit and dude not in visited:
+                to_visit.append(dude)
+        if user_B in to_visit:
+            path.append(user_A),path.append(user_B)    
+            return path        
+        while to_visit:
+            path=find_path_to_friend(network,to_visit[0],user_B,to_visit,visited,path)
+            if user_B in path:
+                if path[0] in get_connections(network,user_A):
+                    path.insert(0,user_A)
+                return path
 
-print find_path_to_friend(network,'John','Freda')
+#OK
+
+# print find_path_to_friend(network,'John','Mercedes')
 
 # Make-Your-Own-Procedure (MYOP)
 # ----------------------------------------------------------------------------- 
@@ -330,17 +352,23 @@ print find_path_to_friend(network,'John','Freda')
 # your network (like path_to_friend). Don't forget to comment your MYOP. You 
 # may give this procedure any name you want.
 
-# Replace this with your own procedure! You can also uncomment the lines below
-# to see how your code behaves. Have fun!
+# ----------------------------------------------------------------------------- 
+# get_all_connections(network, user): 
+#   Finds the connections with all users in the network for a 
+#   given user.
+# 
+# Arguments: 
+#   network: the gamer network data structure
+#   user:    a string containing the name of the user
+#
+# Return: 
+#   A list containing the secondary connections (connections of connections).
+#   - If the user is not in the network, return None.
+#   - If a user has no primary connections to begin with, return an empty list.
+def get_all_connections(network,user):
+    all=[]
+    for dude in network:
+        all.append(find_path_to_friend(network,'Levi',dude,[],[],[]))
+    return all
 
-#net = create_data_structure(example_input)
-#print net
-#print get_connections(net, "Debra")
-#print get_connections(net, "Mercedes")
-#print get_games_liked(net, "John")
-#print add_connection(net, "John", "Freda")
-#print add_new_user(net, "Debra", []) 
-#print add_new_user(net, "Nick", ["Seven Schemers", "The Movie: The Game"]) # True
-#print get_secondary_connections(net, "Mercedes")
-#print count_common_connections(net, "Mercedes", "John")
-#print find_path_to_friend(net, "John", "Ollie")[
+print get_all_connections(network,'John')
